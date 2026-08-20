@@ -19,29 +19,29 @@ function sameOrigin(request) {
 
 export async function POST(request) {
   if (!hasAdminSession()) {
-    return Response.json({ error: "Your admin session has expired." }, { status: 401 });
+    return Response.json({ error: "La sessione è scaduta. Accedi di nuovo." }, { status: 401 });
   }
 
   if (!sameOrigin(request)) {
-    return Response.json({ error: "Invalid request origin." }, { status: 403 });
+    return Response.json({ error: "Origine della richiesta non valida." }, { status: 403 });
   }
 
   const maxPayloadSize = 12 * 1024 * 1024;
   const contentLength = Number(request.headers.get("content-length") || 0);
   if (contentLength > maxPayloadSize) {
-    return Response.json({ error: "The article payload is too large." }, { status: 413 });
+    return Response.json({ error: "L’articolo e le immagini sono troppo pesanti." }, { status: 413 });
   }
 
   try {
     const rawPayload = await request.text();
     if (rawPayload.length > maxPayloadSize) {
-      return Response.json({ error: "The article payload is too large." }, { status: 413 });
+      return Response.json({ error: "L’articolo e le immagini sono troppo pesanti." }, { status: 413 });
     }
     let payload;
     try {
       payload = JSON.parse(rawPayload);
     } catch {
-      return Response.json({ error: "The article payload is not valid JSON." }, { status: 400 });
+      return Response.json({ error: "I dati dell’articolo non sono validi." }, { status: 400 });
     }
     const article = await publishArticle(payload);
 
@@ -61,7 +61,8 @@ export async function POST(request) {
         date: article.date,
         category: article.category,
         image: article.image,
-        imageAlt: article.imageAlt
+        imageAlt: article.imageAlt,
+        blocks: article.blocks
       },
       storage: getArticleStoreStatus().mode
     }, { status: 201 });
@@ -71,6 +72,6 @@ export async function POST(request) {
     }
 
     console.error("Unable to publish article", error);
-    return Response.json({ error: "The article could not be published." }, { status: 500 });
+    return Response.json({ error: "Non è stato possibile pubblicare l’articolo." }, { status: 500 });
   }
 }

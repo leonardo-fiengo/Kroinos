@@ -13,7 +13,9 @@ ADMIN_SESSION_SECRET=choose-a-separate-random-value-at-least-32-characters-long
 
 Start the site with `npm run dev`, then open `http://localhost:3000/article`. Local publishing writes article data to `content/articles.json` and uploaded covers to `public/uploads/`.
 
-The first screen is the article library, with clear actions to create, edit, open, or delete a story. Opening an article brings up the canvas editor: add blocks from the left, drag them in the Layers list to change their position, and click any block in the live preview to edit it in the right-hand panel. Use the desktop/mobile controls to check both layouts, or choose **Full width** for an uninterrupted article preview.
+The first screen is the article library, with clear actions to create, edit, open, or delete a story. Opening an article brings up the canvas editor: write titles and paragraphs directly in the live preview, insert blocks between existing content, and use the right panel for formatting and publishing settings. Images can be selected from the computer for both the cover and content blocks.
+
+Drag a block by its handle to reorder it, or use the visible move buttons on touch screens and with the keyboard. The editor saves a local recovery copy automatically, supports undo/redo (`Ctrl/Cmd + Z`), and shows the current save state in the top bar. Use the desktop/mobile controls to check both layouts, or choose the full preview for an uninterrupted article view.
 
 ## Production publishing
 

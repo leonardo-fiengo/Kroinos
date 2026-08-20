@@ -27,12 +27,12 @@ function sameOrigin(request) {
 
 export async function POST(request) {
   if (!sameOrigin(request)) {
-    return Response.json({ error: "Invalid request origin." }, { status: 403 });
+    return Response.json({ error: "Origine della richiesta non valida." }, { status: 403 });
   }
 
   if (!isAdminConfigured()) {
     return Response.json(
-      { error: "Admin access is not configured on the server." },
+      { error: "L’accesso amministratore non è configurato sul server." },
       { status: 503 }
     );
   }
@@ -48,19 +48,19 @@ export async function POST(request) {
 
   if (record && record.resetAt > now && record.count >= MAX_ATTEMPTS) {
     return Response.json(
-      { error: "Too many attempts. Try again in 15 minutes." },
+      { error: "Troppi tentativi. Riprova tra 15 minuti." },
       { status: 429, headers: { "Retry-After": "900" } }
     );
   }
 
   const contentLength = Number(request.headers.get("content-length") || 0);
   if (contentLength > 4096) {
-    return Response.json({ error: "Login request is too large." }, { status: 413 });
+    return Response.json({ error: "La richiesta di accesso è troppo grande." }, { status: 413 });
   }
 
   const rawBody = await request.text();
   if (rawBody.length > 4096) {
-    return Response.json({ error: "Login request is too large." }, { status: 413 });
+    return Response.json({ error: "La richiesta di accesso è troppo grande." }, { status: 413 });
   }
   const body = (() => {
     try { return JSON.parse(rawBody); } catch { return {}; }
@@ -70,7 +70,7 @@ export async function POST(request) {
       ? { count: record.count + 1, resetAt: record.resetAt }
       : { count: 1, resetAt: now + WINDOW_MS };
     attempts.set(identifier, nextRecord);
-    return Response.json({ error: "Access key not recognized." }, { status: 401 });
+    return Response.json({ error: "Chiave di accesso non riconosciuta." }, { status: 401 });
   }
 
   attempts.delete(identifier);

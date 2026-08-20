@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { useMemo, useState } from "react";
-import ArticleCard from "@/components/ArticleCard";
+import EditorialImage from "@/components/EditorialImage";
 import FilterBar from "@/components/FilterBar";
 
 const keys = [
@@ -41,16 +43,31 @@ export default function ArticlesExplorer({ articles }) {
       />
 
       {filtered.length > 0 ? (
-        <div className="mt-10 grid gap-px bg-white/10 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((article) => (
-            <ArticleCard key={article.slug} article={article} />
+        <div className="border-t border-charcoal/20">
+          {filtered.map((article, index) => (
+            <article key={article.slug} className="archive-story-row group grid grid-cols-[32px_1fr] gap-5 border-b border-charcoal/20 py-7 md:grid-cols-[40px_220px_1fr_24px] md:items-center md:gap-7">
+              <span className="text-[.68rem] font-semibold text-wine">{String(index + 1).padStart(2, "0")}</span>
+              <Link href={`/article/${article.slug}`} className="relative col-span-2 aspect-[16/9] overflow-hidden bg-charcoal/10 md:col-span-1" tabIndex={-1} aria-hidden="true">
+                <EditorialImage src={article.image} alt="" sizes="220px" className="archive-story-image object-cover" />
+              </Link>
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[.68rem] font-semibold uppercase tracking-[.04em] text-charcoal/48">
+                  {article.category} / {article.region} / {article.date}
+                </p>
+                <h2 className="mt-3 max-w-[22ch] font-serif text-3xl leading-[1.02] text-charcoal sm:text-4xl">
+                  <Link href={`/article/${article.slug}`}>{article.title}</Link>
+                </h2>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-charcoal/64">{article.subtitle}</p>
+              </div>
+              <ArrowUpRight className="hidden text-wine md:block" size={18} aria-hidden="true" />
+            </article>
           ))}
         </div>
       ) : (
-        <div className="mt-10 border border-white/15 bg-ink px-6 py-16 text-center">
-          <p className="font-serif text-4xl text-cream">Nessuna storia in questo incrocio.</p>
-          <p className="mt-4 text-sm text-cream/62">Prova a cambiare territorio, livello o parola chiave.</p>
-          <button type="button" onClick={() => { setValues({}); setQuery(""); }} className="mt-7 border border-white/20 px-5 py-3 text-xs uppercase text-cream hover:border-wine hover:text-wine">
+        <div className="border-b border-charcoal/20 px-6 py-20 text-center">
+          <p className="font-serif text-4xl text-charcoal">Nessuna storia in questo incrocio.</p>
+          <p className="mt-4 text-sm text-charcoal/62">Prova a cambiare territorio, livello o parola chiave.</p>
+          <button type="button" onClick={() => { setValues({}); setQuery(""); }} className="home-primary-link mt-7 border border-charcoal bg-charcoal px-5 py-3 text-xs font-semibold uppercase text-cream">
             Azzera i filtri
           </button>
         </div>

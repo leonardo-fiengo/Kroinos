@@ -19,10 +19,10 @@ function sameOrigin(request) {
 
 function authorize(request) {
   if (!hasAdminSession()) {
-    return Response.json({ error: "Your admin session has expired." }, { status: 401 });
+    return Response.json({ error: "La sessione è scaduta. Accedi di nuovo." }, { status: 401 });
   }
   if (!sameOrigin(request)) {
-    return Response.json({ error: "Invalid request origin." }, { status: 403 });
+    return Response.json({ error: "Origine della richiesta non valida." }, { status: 403 });
   }
   return null;
 }
@@ -46,7 +46,8 @@ function articleResponse(article) {
     date: article.date,
     category: article.category,
     image: article.image,
-    imageAlt: article.imageAlt
+    imageAlt: article.imageAlt,
+    blocks: article.blocks
   };
 }
 
@@ -56,20 +57,20 @@ export async function PUT(request, { params }) {
 
   const maxPayloadSize = 12 * 1024 * 1024;
   if (Number(request.headers.get("content-length") || 0) > maxPayloadSize) {
-    return Response.json({ error: "The article payload is too large." }, { status: 413 });
+    return Response.json({ error: "L’articolo e le immagini sono troppo pesanti." }, { status: 413 });
   }
 
   try {
     const rawPayload = await request.text();
     if (rawPayload.length > maxPayloadSize) {
-      return Response.json({ error: "The article payload is too large." }, { status: 413 });
+      return Response.json({ error: "L’articolo e le immagini sono troppo pesanti." }, { status: 413 });
     }
 
     let payload;
     try {
       payload = JSON.parse(rawPayload);
     } catch {
-      return Response.json({ error: "The article payload is not valid JSON." }, { status: 400 });
+      return Response.json({ error: "I dati dell’articolo non sono validi." }, { status: 400 });
     }
 
     const article = await updateArticle(params.slug, payload);
@@ -80,7 +81,7 @@ export async function PUT(request, { params }) {
       return Response.json({ error: error.message }, { status: error.status });
     }
     console.error("Unable to update article", error);
-    return Response.json({ error: "The article could not be updated." }, { status: 500 });
+    return Response.json({ error: "Non è stato possibile aggiornare l’articolo." }, { status: 500 });
   }
 }
 
@@ -97,6 +98,6 @@ export async function DELETE(request, { params }) {
       return Response.json({ error: error.message }, { status: error.status });
     }
     console.error("Unable to delete article", error);
-    return Response.json({ error: "The article could not be deleted." }, { status: 500 });
+    return Response.json({ error: "Non è stato possibile eliminare l’articolo." }, { status: 500 });
   }
 }

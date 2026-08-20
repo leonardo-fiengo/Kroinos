@@ -1,8 +1,8 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { notFound } from "next/navigation";
-import AnimatedPageWrapper from "@/components/AnimatedPageWrapper";
-import ArticleCard from "@/components/ArticleCard";
-import RegionCard from "@/components/RegionCard";
+import EditorialImage from "@/components/EditorialImage";
+import HomeRegionIndex from "@/components/HomeRegionIndex";
 import { getArticles } from "@/lib/article-store";
 import { regions } from "@/lib/data";
 
@@ -37,63 +37,76 @@ export default async function RegionDetailPage({ params }) {
   const otherRegions = regions.filter((item) => item.id !== region.id);
 
   return (
-    <AnimatedPageWrapper>
-      <header className="relative flex min-h-[70svh] items-end overflow-hidden border-b border-white/10 px-4 pb-14 pt-36">
-        <Image src={region.image} alt={region.imageAlt} fill priority sizes="100vw" className="object-cover grayscale-[.45]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-black/25" />
-        <div className="technical-grid absolute inset-0 opacity-70" />
-        <div className="editorial-shell relative">
-          <p className="eyebrow"><span className="text-wine">TR</span> / {region.country} / {region.coordinates}</p>
-          <h1 className="mt-6 font-serif text-7xl leading-[.85] text-cream md:text-9xl">{region.name}</h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-cream/78">{region.introduction}</p>
+    <main>
+      <header className="technical-grid border-b border-white/10 bg-charcoal px-4 pb-16 pt-32 text-cream md:pb-20 md:pt-40">
+        <div className="editorial-shell public-reveal grid gap-10 lg:grid-cols-[.78fr_1.22fr] lg:items-end">
+          <div>
+            <Link href="/regions" className="home-secondary-link mb-12 inline-flex min-h-11 items-center gap-3 text-[.68rem] font-semibold uppercase tracking-[.04em] text-cream/58">
+              <ArrowLeft size={15} aria-hidden="true" /> Tutti i territori
+            </Link>
+            <p className="text-[.7rem] font-semibold uppercase tracking-[.06em] text-wine">{region.country} / {region.coordinates}</p>
+            <h1 className="mt-6 font-serif text-7xl leading-[.8] sm:text-8xl md:text-9xl">{region.name}</h1>
+            <p className="mt-8 max-w-xl text-base leading-8 text-cream/68 md:text-lg">{region.introduction}</p>
+          </div>
+
+          <div className="relative aspect-[16/11] overflow-hidden bg-white/5">
+            <EditorialImage src={region.image} alt={region.imageAlt} priority sizes="(min-width: 1024px) 58vw, 100vw" className="object-cover grayscale-[.25]" />
+            <span className="absolute bottom-0 right-0 bg-wine px-4 py-3 text-[.68rem] font-semibold uppercase tracking-[.04em] text-white">
+              {regionArticles.length} {regionArticles.length === 1 ? "storia" : "storie"}
+            </span>
+          </div>
         </div>
       </header>
 
-      <section className="editorial-shell grid gap-10 py-16 lg:grid-cols-[300px_1fr]">
-        <aside className="technical-panel h-fit p-6 lg:sticky lg:top-28">
-          <p className="eyebrow"><span className="text-wine">01</span> / Coordinate</p>
-          <p className="mt-6 font-serif text-3xl leading-tight text-cream">{region.climate}</p>
-          <div className="mt-7 flex flex-wrap gap-2 border-t border-white/10 pt-6">
-            {region.focus.map((item) => (
-              <span key={item} className="border border-white/15 px-3 py-2 text-[.7rem] uppercase text-cream/65">{item}</span>
-            ))}
-          </div>
-        </aside>
-
-        <div>
-          <div className="mb-8 flex items-end justify-between gap-6 border-b border-white/10 pb-6">
-            <div>
-              <p className="eyebrow"><span className="text-wine">02</span> / Archivio locale</p>
-              <h2 className="mt-4 font-serif text-5xl text-cream">Storie dal territorio</h2>
+      <section className="paper-section px-4 py-20 md:py-28">
+        <div className="editorial-shell grid gap-14 lg:grid-cols-[270px_1fr] lg:gap-20">
+          <aside className="h-fit border-t border-charcoal/20 pt-6 lg:sticky lg:top-28">
+            <p className="text-[.68rem] font-semibold uppercase tracking-[.05em] text-wine">Coordinate</p>
+            <p className="mt-5 font-serif text-3xl leading-tight text-charcoal">{region.climate}</p>
+            <div className="mt-7 flex flex-wrap gap-x-4 gap-y-2 border-t border-charcoal/15 pt-5 text-[.68rem] font-semibold uppercase tracking-[.04em] text-charcoal/52">
+              {region.focus.map((item) => <span key={item}>{item}</span>)}
             </div>
-            <p className="text-sm text-cream/55">{regionArticles.length} {regionArticles.length === 1 ? "articolo" : "articoli"}</p>
-          </div>
+          </aside>
 
-          {regionArticles.length > 0 ? (
-            <div className="grid gap-px bg-white/10 md:grid-cols-2">
-              {regionArticles.map((article) => <ArticleCard key={article.slug} article={article} />)}
-            </div>
-          ) : (
-            <p className="border border-white/10 p-8 text-cream/68">Il quaderno di questo territorio è in preparazione.</p>
-          )}
+          <div>
+            <header className="flex flex-col gap-4 border-b border-charcoal/20 pb-7 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[.68rem] font-semibold uppercase tracking-[.05em] text-wine">Archivio locale</p>
+                <h2 className="mt-4 font-serif text-5xl leading-none text-charcoal md:text-6xl">Storie dal territorio</h2>
+              </div>
+              <p className="text-sm text-charcoal/52">{regionArticles.length} {regionArticles.length === 1 ? "articolo" : "articoli"}</p>
+            </header>
+
+            {regionArticles.length > 0 ? (
+              <div className="border-t border-charcoal/20">
+                {regionArticles.map((article, index) => (
+                  <article key={article.slug} className="archive-story-row group grid gap-5 border-b border-charcoal/20 py-7 sm:grid-cols-[36px_150px_1fr_20px] sm:items-center">
+                    <span className="text-[.68rem] font-semibold text-wine">{String(index + 1).padStart(2, "0")}</span>
+                    <Link href={`/article/${article.slug}`} className="relative aspect-[4/3] overflow-hidden bg-charcoal/10" tabIndex={-1} aria-hidden="true">
+                      <EditorialImage src={article.image} alt="" sizes="150px" className="archive-story-image object-cover" />
+                    </Link>
+                    <div>
+                      <p className="text-[.68rem] font-semibold uppercase tracking-[.04em] text-charcoal/46">{article.category} / {article.readTime} / {article.date}</p>
+                      <h3 className="mt-3 font-serif text-3xl leading-none text-charcoal">
+                        <Link href={`/article/${article.slug}`}>{article.title}</Link>
+                      </h3>
+                      <p className="mt-3 text-sm leading-6 text-charcoal/60">{article.subtitle}</p>
+                    </div>
+                    <ArrowUpRight className="hidden text-wine sm:block" size={17} aria-hidden="true" />
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="border-b border-charcoal/20 py-16">
+                <p className="font-serif text-3xl text-charcoal">Il quaderno di questo territorio è in preparazione.</p>
+                <p className="mt-3 text-sm text-charcoal/60">La prima storia arriverà presto.</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
-      <section className="technical-grid border-t border-white/10 px-4 py-16">
-        <div className="editorial-shell">
-          <p className="eyebrow"><span className="text-wine">03</span> / Continua l’atlante</p>
-          <div className="mt-8 grid gap-px bg-white/10 md:grid-cols-2">
-            {otherRegions.map((item, index) => (
-              <RegionCard
-                key={item.id}
-                region={item}
-                index={index}
-                articleCount={articles.filter((article) => article.region === item.name).length}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    </AnimatedPageWrapper>
+      <HomeRegionIndex regions={otherRegions} articles={articles} />
+    </main>
   );
 }

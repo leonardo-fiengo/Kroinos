@@ -31,30 +31,30 @@ export default function AdminLogin({ configured }) {
   }
 
   return (
-    <main className="fixed inset-0 z-[100] grid min-h-screen overflow-y-auto bg-[#ebe7de] text-[#171614] lg:grid-cols-[1.1fr_.9fr]">
+    <main className="fixed inset-0 z-[100] grid min-h-[100dvh] overflow-y-auto bg-[#ebe7de] text-[#171614] lg:grid-cols-[1.1fr_.9fr]">
       <section className="relative hidden overflow-hidden bg-[#0a0a0a] p-12 text-cream lg:flex lg:flex-col lg:justify-between">
         <div className="technical-grid absolute inset-0 opacity-70" />
         <div className="absolute -left-32 top-1/3 h-96 w-96 rounded-full bg-wine/20 blur-[100px]" />
         <Image src="/logo-kroinos.png" alt="Kroinos" width={810} height={190} priority className="relative h-9 w-auto self-start" />
         <div className="relative max-w-xl">
-          <p className="text-xs uppercase tracking-[.18em] text-wine">Private editorial room</p>
+          <p className="text-[13px] font-semibold text-wine">Studio editoriale riservato</p>
           <h1 className="mt-7 font-serif text-7xl leading-[.86]">Le storie iniziano qui.</h1>
           <p className="mt-7 max-w-md text-base leading-8 text-cream/62">
             Scrivi, ordina e guarda l’articolo esattamente come apparirà prima di pubblicarlo.
           </p>
         </div>
-        <p className="relative text-[.68rem] uppercase tracking-[.14em] text-cream/38">Kroinos / Studio editoriale</p>
+        <p className="relative text-[13px] text-cream/62">Kroinos / Studio editoriale</p>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center px-5 py-16 sm:px-10">
+      <section className="flex min-h-[100dvh] items-center justify-center px-5 py-16 sm:px-10">
         <div className="w-full max-w-md">
           <Image src="/logo-kroinos.png" alt="Kroinos" width={810} height={190} priority className="mb-14 h-8 w-auto brightness-0 lg:hidden" />
           <div className="mb-9 flex h-12 w-12 items-center justify-center border border-[#171614]/15 bg-white/50">
             <ShieldCheck size={21} aria-hidden="true" />
           </div>
-          <p className="text-[.68rem] font-semibold uppercase tracking-[.16em] text-wine">Accesso riservato</p>
-          <h2 className="mt-4 font-serif text-5xl leading-none">Admin studio</h2>
-          <p className="mt-5 text-sm leading-7 text-[#171614]/58">
+          <p className="text-[13px] font-semibold text-wine">Accesso riservato</p>
+          <h2 className="mt-4 font-serif text-5xl leading-none">Studio editoriale</h2>
+          <p className="mt-5 text-[15px] leading-7 text-[#171614]/68">
             Inserisci la chiave editoriale. La chiave resta sul server e la sessione scade automaticamente.
           </p>
 
@@ -64,7 +64,7 @@ export default function AdminLogin({ configured }) {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="mt-9">
-              <label htmlFor="admin-key" className="text-[.68rem] font-semibold uppercase tracking-[.14em] text-[#171614]/55">
+              <label htmlFor="admin-key" className="text-[14px] font-medium text-[#171614]/72">
                 Chiave di accesso
               </label>
               <div className="mt-3 flex border border-[#171614]/20 bg-white focus-within:border-wine">
@@ -87,7 +87,7 @@ export default function AdminLogin({ configured }) {
               <button
                 type="submit"
                 disabled={loading || !key}
-                className="mt-6 flex min-h-14 w-full items-center justify-between bg-[#171614] px-5 text-xs font-semibold uppercase tracking-[.08em] text-white transition hover:bg-wine disabled:cursor-not-allowed disabled:opacity-45"
+                className="mt-6 flex min-h-14 w-full items-center justify-between bg-wine px-5 text-[14px] font-semibold text-white transition-[background-color,transform] duration-150 hover:bg-[#7f0f20] active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-45"
               >
                 {loading ? "Verifica…" : "Entra nello studio"}
                 <ArrowRight size={17} aria-hidden="true" />
@@ -95,7 +95,7 @@ export default function AdminLogin({ configured }) {
             </form>
           )}
 
-          <p className="mt-10 border-t border-[#171614]/10 pt-5 text-xs leading-5 text-[#171614]/42">
+          <p className="mt-10 border-t border-[#171614]/10 pt-5 text-[13px] leading-5 text-[#171614]/62">
             Questa pagina non è collegata dalla navigazione pubblica né inclusa nella sitemap.
           </p>
         </div>

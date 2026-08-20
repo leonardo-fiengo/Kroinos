@@ -1,4 +1,67 @@
 {
-  "articles": [],
+  "articles": [
+    {
+      "id": "0f506f30-9d14-413a-ba2e-150798b70ec9",
+      "slug": "ciao",
+      "title": "ciao",
+      "subtitle": "caio",
+      "category": "Vino",
+      "date": "19 agosto 2026",
+      "publishedAt": "2026-08-19",
+      "createdAt": "2026-08-20T09:41:15.537Z",
+      "updatedAt": "2026-08-20T09:41:15.537Z",
+      "author": "Carmen Buongiovanni",
+      "region": "Italia",
+      "difficulty": "Intermedio",
+      "readTime": "1 min",
+      "featured": true,
+      "image": "/uploads/ciao-cover-1787218875484-78a5f941.webp",
+      "imageAlt": "immagine",
+      "pullQuote": "",
+      "sourceUrl": "",
+      "sourceLabel": "Kroinos / Redazione",
+      "bottle": "",
+      "tags": [
+        "vino"
+      ],
+      "notes": {
+        "acidity": 50,
+        "body": 50,
+        "tannins": 30,
+        "sweetness": 10,
+        "finish": 60
+      },
+      "blocks": [
+        {
+          "id": "00f29177-4d82-4929-809a-7013ebd2f415",
+          "type": "heading",
+          "text": "ciao",
+          "align": "left",
+          "bold": false,
+          "italic": false,
+          "href": "",
+          "level": 2
+        },
+        {
+          "id": "248b0f67-15b5-4ba2-8339-05e8a808fe43",
+          "type": "paragraph",
+          "text": "caio",
+          "align": "left",
+          "bold": false,
+          "italic": false,
+          "href": ""
+        },
+        {
+          "id": "2ef15e90-4988-479d-9594-c8c4a99eb0fb",
+          "type": "quote",
+          "text": "citazione",
+          "align": "left",
+          "bold": false,
+          "italic": false,
+          "href": ""
+        }
+      ]
+    }
+  ],
   "deletedSlugs": []
 }

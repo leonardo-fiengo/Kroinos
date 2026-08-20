@@ -17,11 +17,11 @@ function ArticleLibrary({ articles, storeStatus, onCreate, onEdit, onDelete }) {
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col gap-6 border-b border-[#171614]/12 pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-[.65rem] font-semibold uppercase tracking-[.14em] text-wine">Studio editoriale</p>
+            <p className="text-[13px] font-semibold text-wine">Studio editoriale</p>
             <h1 className="mt-3 font-serif text-6xl leading-none">Articoli</h1>
-            <p className="mt-4 text-sm text-[#171614]/52">Crea, modifica o elimina una storia.</p>
+            <p className="mt-4 text-[15px] text-[#171614]/65">Crea, modifica o elimina una storia.</p>
           </div>
-          <button onClick={onCreate} className="flex min-h-14 items-center justify-between gap-10 bg-[#171614] px-6 text-xs font-semibold uppercase tracking-[.08em] text-white hover:bg-wine">
+          <button onClick={onCreate} className="flex min-h-14 items-center justify-between gap-10 bg-wine px-6 text-[14px] font-semibold text-white transition-[background-color,transform] duration-150 hover:bg-[#7f0f20] active:scale-[.98]">
             Nuovo articolo <Plus size={18} />
           </button>
         </div>
@@ -32,7 +32,7 @@ function ArticleLibrary({ articles, storeStatus, onCreate, onEdit, onDelete }) {
             <span className="sr-only">Cerca articoli</span>
             <input value={query} onChange={(event) => setQuery(event.target.value)} className="min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cerca per titolo, categoria o autore…" />
           </label>
-          <p className="text-xs text-[#171614]/42">{filtered.length} {filtered.length === 1 ? "articolo" : "articoli"} · {storeStatus.mode === "github" ? "GitHub collegato" : "Archivio locale"}</p>
+          <p className="text-[13px] text-[#171614]/62">{filtered.length} {filtered.length === 1 ? "articolo" : "articoli"} · {storeStatus.mode === "github" ? "GitHub collegato" : "Archivio locale"}</p>
         </div>
 
         <div className="mt-5 overflow-hidden border border-[#171614]/12 bg-white">
@@ -45,18 +45,22 @@ function ArticleLibrary({ articles, storeStatus, onCreate, onEdit, onDelete }) {
                 )}
               </div>
               <div className="min-w-0">
-                <p className="text-[.62rem] font-semibold uppercase tracking-[.09em] text-wine">{article.category} / {article.date}</p>
+                <p className="text-[13px] font-semibold text-wine">{article.category} / {article.date}</p>
                 <h2 className="mt-2 font-serif text-2xl leading-tight sm:text-3xl">{article.title}</h2>
-                <p className="mt-2 truncate text-xs text-[#171614]/42">/article/{article.slug}</p>
+                <p className="mt-2 truncate text-[13px] text-[#171614]/58">/article/{article.slug}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-                <Link href={`/article/${article.slug}`} target="_blank" className="grid h-11 w-11 place-items-center border border-[#171614]/12 text-[#171614]/45 hover:border-wine hover:text-wine" aria-label={`Apri ${article.title}`}><ArrowUpRight size={16} /></Link>
-                <button onClick={() => onEdit(article)} className="flex min-h-11 items-center gap-2 border border-[#171614]/14 px-4 text-xs font-semibold uppercase hover:border-wine hover:text-wine"><Pencil size={15} /> Modifica</button>
-                <button onClick={() => onDelete(article)} className="grid h-11 w-11 place-items-center border border-[#171614]/12 text-[#171614]/40 hover:border-red-700 hover:text-red-700" aria-label={`Elimina ${article.title}`}><Trash2 size={15} /></button>
+                <Link href={`/article/${article.slug}`} target="_blank" className="flex min-h-11 items-center gap-2 border border-[#171614]/14 px-3 text-[13px] text-[#171614]/70 hover:border-wine hover:text-wine" aria-label={`Apri ${article.title}`}><ArrowUpRight size={16} /> Apri</Link>
+                <button onClick={() => onEdit(article)} className="flex min-h-11 items-center gap-2 border border-[#171614]/14 px-4 text-[13px] font-semibold hover:border-wine hover:text-wine"><Pencil size={15} /> Modifica</button>
+                <button onClick={() => onDelete(article)} className="flex min-h-11 items-center gap-2 border border-[#171614]/14 px-3 text-[13px] text-red-700 hover:border-red-700" aria-label={`Elimina ${article.title}`}><Trash2 size={15} /> Elimina</button>
               </div>
             </article>
           )) : (
-            <div className="p-12 text-center"><p className="font-serif text-3xl">Nessun articolo trovato</p><p className="mt-3 text-sm text-[#171614]/45">Prova con un’altra ricerca.</p></div>
+            <div className="p-12 text-center">
+              <p className="font-serif text-3xl">{query ? "Nessun articolo trovato" : "Inizia dal primo articolo"}</p>
+              <p className="mt-3 text-[14px] text-[#171614]/62">{query ? "Prova a cambiare la ricerca." : "Crea una storia e guardala nell’anteprima prima di pubblicarla."}</p>
+              {!query && <button onClick={onCreate} className="mt-6 inline-flex min-h-12 items-center gap-2 bg-wine px-5 text-[14px] font-semibold text-white hover:bg-[#7f0f20]"><Plus size={17} /> Crea il primo articolo</button>}
+            </div>
           )}
         </div>
 
@@ -66,7 +70,7 @@ function ArticleLibrary({ articles, storeStatus, onCreate, onEdit, onDelete }) {
   );
 }
 
-function DeleteDialog({ article, busy, onCancel, onConfirm }) {
+function DeleteDialog({ article, busy, error, onCancel, onConfirm }) {
   if (!article) return null;
   return (
     <div className="fixed inset-0 z-[140] grid place-items-center bg-black/65 p-4" role="dialog" aria-modal="true" aria-labelledby="delete-title">
@@ -74,6 +78,7 @@ function DeleteDialog({ article, busy, onCancel, onConfirm }) {
         <div className="flex h-12 w-12 items-center justify-center bg-red-50 text-red-700"><Trash2 size={20} /></div>
         <h2 id="delete-title" className="mt-6 font-serif text-4xl">Eliminare l’articolo?</h2>
         <p className="mt-4 text-sm leading-7 text-[#171614]/58">“{article.title}” non sarà più visibile sul sito. Questa azione viene salvata nell’archivio editoriale.</p>
+        {error && <p className="mt-4 border-l-2 border-red-700 bg-red-50 p-3 text-[13px] leading-5 text-red-900" role="alert">{error}</p>}
         <div className="mt-7 grid grid-cols-2 gap-3">
           <button onClick={onCancel} disabled={busy} className="min-h-12 border border-[#171614]/15 text-xs font-semibold uppercase hover:border-[#171614]">Annulla</button>
           <button onClick={onConfirm} disabled={busy} className="min-h-12 bg-red-700 text-xs font-semibold uppercase text-white hover:bg-red-800 disabled:opacity-45">{busy ? "Elimino…" : "Sì, elimina"}</button>
@@ -90,6 +95,7 @@ export default function AdminStudio({ initialArticles, storeStatus }) {
   const [editorKey, setEditorKey] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   function createArticle() {
     setEditingArticle(null);
@@ -109,6 +115,7 @@ export default function AdminStudio({ initialArticles, storeStatus }) {
   }
 
   async function deleteArticle() {
+    setDeleteError("");
     setDeleting(true);
     try {
       const response = await fetch(`/api/admin/articles/${encodeURIComponent(deleteTarget.slug)}`, { method: "DELETE" });
@@ -118,7 +125,7 @@ export default function AdminStudio({ initialArticles, storeStatus }) {
       setArticles((current) => current.filter((article) => article.slug !== deleteTarget.slug));
       setDeleteTarget(null);
     } catch (error) {
-      window.alert(error.message);
+      setDeleteError(error.message);
     } finally {
       setDeleting(false);
     }
@@ -159,7 +166,7 @@ export default function AdminStudio({ initialArticles, storeStatus }) {
         <div className="min-h-0 flex-1"><ArticleLibrary articles={articles} storeStatus={storeStatus} onCreate={createArticle} onEdit={editArticle} onDelete={setDeleteTarget} /></div>
       </section>
 
-      <DeleteDialog article={deleteTarget} busy={deleting} onCancel={() => setDeleteTarget(null)} onConfirm={deleteArticle} />
+      <DeleteDialog article={deleteTarget} busy={deleting} error={deleteError} onCancel={() => { setDeleteTarget(null); setDeleteError(""); }} onConfirm={deleteArticle} />
     </main>
   );
 }

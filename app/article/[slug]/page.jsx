@@ -12,6 +12,19 @@ import { getArticleNodes } from "@/lib/article-content";
 import { getArticles } from "@/lib/article-store";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
+function formattedText(node) {
+  const content = <span className={`${node.bold ? "font-semibold" : ""} ${node.italic ? "italic" : ""}`}>{node.text}</span>;
+  if (!node.href) return content;
+  const external = /^https?:\/\//i.test(node.href);
+  return <a href={node.href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined} className="underline decoration-wine/70 underline-offset-4 hover:text-cream">{content}</a>;
+}
+
+function textAlignment(node) {
+  if (node.align === "center") return "text-center";
+  if (node.align === "right") return "text-right";
+  return "text-left";
+}
+
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
@@ -110,10 +123,11 @@ export default async function ArticleDetailPage({ params }) {
             <div className="space-y-7">
               {nodes.length > 0 ? nodes.map((node, index) => {
                 if (node.type === "heading") {
+                  const Heading = node.level === 3 ? "h3" : "h2";
                   return (
-                    <div key={`${node.id}-${index}`} className="scroll-mt-28 pt-10" id={node.id}>
-                      <div className="mb-5 h-px w-24 bg-wine/40" />
-                      <h2 className="font-serif text-4xl leading-none text-cream md:text-5xl">{node.text}</h2>
+                    <div key={`${node.id}-${index}`} className={`scroll-mt-28 pt-10 ${textAlignment(node)}`} id={node.id}>
+                      <div className={`mb-5 h-px w-24 bg-wine/40 ${node.align === "center" ? "mx-auto" : node.align === "right" ? "ml-auto" : ""}`} />
+                      <Heading className={`font-serif leading-none text-cream ${node.level === 3 ? "text-3xl md:text-4xl" : "text-4xl md:text-5xl"}`}>{formattedText(node)}</Heading>
                     </div>
                   );
                 }
@@ -129,8 +143,8 @@ export default async function ArticleDetailPage({ params }) {
 
                 if (node.type === "quote") {
                   return (
-                    <blockquote key={`${node.text.slice(0, 40)}-${index}`} className="border-l-2 border-wine pl-6 font-serif text-3xl leading-tight text-cream">
-                      “{node.text}”
+                    <blockquote key={`${node.text.slice(0, 40)}-${index}`} className={`border-l-2 border-wine pl-6 font-serif text-3xl leading-tight text-cream ${textAlignment(node)}`}>
+                      “{formattedText(node)}”
                     </blockquote>
                   );
                 }
@@ -158,7 +172,7 @@ export default async function ArticleDetailPage({ params }) {
                   return <hr key={`divider-${index}`} className="my-10 border-0 border-t border-white/15" />;
                 }
 
-                return <p key={`${node.text.slice(0, 40)}-${index}`} className="whitespace-pre-line">{node.text}</p>;
+                return <p key={`${node.text.slice(0, 40)}-${index}`} className={`whitespace-pre-line ${textAlignment(node)}`}>{formattedText(node)}</p>;
               }) : <p>Testo non disponibile.</p>}
             </div>
 
