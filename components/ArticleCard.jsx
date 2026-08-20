@@ -5,7 +5,7 @@ import ImageZoomLens from "@/components/ImageZoomLens";
 export default function ArticleCard({ article, compact = false }) {
   return (
     <article className="card-lift group technical-panel overflow-hidden">
-      <Link href={`/articles/${article.slug}`} className="block h-full">
+      <Link href={`/article/${article.slug}`} className="block h-full">
         <ImageZoomLens
           src={article.image}
           alt={article.imageAlt}

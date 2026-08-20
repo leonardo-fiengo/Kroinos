@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import AnimatedPageWrapper from "@/components/AnimatedPageWrapper";
 import ArticleCard from "@/components/ArticleCard";
 import RegionCard from "@/components/RegionCard";
-import { articles, regions } from "@/lib/data";
+import { getArticles } from "@/lib/article-store";
+import { regions } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return regions.map((region) => ({ slug: region.id }));
@@ -25,10 +28,11 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function RegionDetailPage({ params }) {
+export default async function RegionDetailPage({ params }) {
   const region = regions.find((item) => item.id === params.slug);
   if (!region) notFound();
 
+  const articles = await getArticles();
   const regionArticles = articles.filter((article) => article.region === region.name);
   const otherRegions = regions.filter((item) => item.id !== region.id);
 

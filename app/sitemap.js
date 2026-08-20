@@ -1,7 +1,11 @@
-import { articles, regions } from "@/lib/data";
+import { getArticles } from "@/lib/article-store";
+import { regions } from "@/lib/data";
 import { absoluteUrl } from "@/lib/site";
 
-export default function sitemap() {
+export const revalidate = 0;
+
+export default async function sitemap() {
+  const articles = await getArticles();
   const staticRoutes = ["", "/articles", "/canteen", "/regions", "/about", "/newsletter", "/privacy"];
   const newestArticleDate = articles[0]?.publishedAt || new Date().toISOString();
 
@@ -13,7 +17,7 @@ export default function sitemap() {
       priority: route === "" ? 1 : .7
     })),
     ...articles.map((article) => ({
-      url: absoluteUrl(`/articles/${article.slug}`),
+      url: absoluteUrl(`/article/${article.slug}`),
       lastModified: article.publishedAt,
       changeFrequency: "yearly",
       priority: .8

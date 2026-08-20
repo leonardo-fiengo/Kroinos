@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const editorialLinks = [
   ["Articoli", "/articles"],
@@ -14,6 +17,9 @@ const projectLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/article") return null;
+
   return (
     <footer className="technical-grid border-t border-white/10 bg-charcoal px-4 py-16 text-cream">
       <div className="editorial-shell grid gap-12 lg:grid-cols-[1.25fr_.55fr_.55fr]">

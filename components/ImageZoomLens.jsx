@@ -1,4 +1,4 @@
-import Image from "next/image";
+import EditorialImage from "@/components/EditorialImage";
 
 export default function ImageZoomLens({
   src,
@@ -9,10 +9,9 @@ export default function ImageZoomLens({
 }) {
   return (
     <div className={`group relative overflow-hidden ${className}`}>
-      <Image
+      <EditorialImage
         src={src}
         alt={alt}
-        fill
         priority={priority}
         sizes={sizes}
         className="object-cover grayscale-[.72] transition duration-500 ease-out group-hover:scale-[1.025] group-hover:grayscale-0"

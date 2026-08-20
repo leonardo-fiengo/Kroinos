@@ -6,9 +6,13 @@ import FeaturedArticle from "@/components/FeaturedArticle";
 import ArticleCard from "@/components/ArticleCard";
 import NewsletterCta from "@/components/NewsletterCta";
 import RegionCard from "@/components/RegionCard";
-import { articles, regions } from "@/lib/data";
+import { getArticles } from "@/lib/article-store";
+import { regions } from "@/lib/data";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const articles = await getArticles();
   const featured = articles.find((article) => article.featured) || articles[0];
 
   return (

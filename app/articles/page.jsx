@@ -1,6 +1,8 @@
 import AnimatedPageWrapper from "@/components/AnimatedPageWrapper";
 import ArticlesExplorer from "@/components/ArticlesExplorer";
-import { articles } from "@/lib/data";
+import { getArticles } from "@/lib/article-store";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Articoli",
@@ -8,7 +10,9 @@ export const metadata = {
   alternates: { canonical: "/articles" }
 };
 
-export default function ArticlesPage() {
+export default async function ArticlesPage() {
+  const articles = await getArticles();
+
   return (
     <AnimatedPageWrapper className="technical-grid min-h-screen px-4 pb-24 pt-36">
       <section className="editorial-shell">

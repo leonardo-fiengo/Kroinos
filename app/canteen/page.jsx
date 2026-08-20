@@ -1,9 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import AnimatedPageWrapper from "@/components/AnimatedPageWrapper";
+import EditorialImage from "@/components/EditorialImage";
 import TastingMeter from "@/components/TastingMeter";
-import { cellarAnalyses } from "@/lib/data";
+import { getArticles, getCellarAnalyses } from "@/lib/article-store";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Cantina",
@@ -11,7 +13,9 @@ export const metadata = {
   alternates: { canonical: "/canteen" }
 };
 
-export default function CanteenPage() {
+export default async function CanteenPage() {
+  const cellarAnalyses = getCellarAnalyses(await getArticles());
+
   return (
     <AnimatedPageWrapper className="technical-grid min-h-screen px-4 pb-24 pt-36">
       <section className="editorial-shell">
@@ -48,10 +52,9 @@ export default function CanteenPage() {
               </div>
 
               <div className="technical-grid relative aspect-[16/9] overflow-hidden border-y border-white/10 bg-charcoal">
-                <Image
+                <EditorialImage
                   src={analysis.image}
                   alt={analysis.imageAlt}
-                  fill
                   sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
                   className="object-cover grayscale-[.65]"
                 />
@@ -71,9 +74,11 @@ export default function CanteenPage() {
                   <Link href={analysis.articleUrl} className="flex min-h-10 items-center justify-between text-cream/75 transition hover:text-wine">
                     Leggi l’articolo <ArrowUpRight size={15} aria-hidden="true" />
                   </Link>
-                  <a href={analysis.sourceUrl} target="_blank" rel="noreferrer" className="flex min-h-10 items-center justify-between text-cream/58 transition hover:text-wine">
-                    Fonte originale <ArrowUpRight size={15} aria-hidden="true" />
-                  </a>
+                  {analysis.sourceUrl && (
+                    <a href={analysis.sourceUrl} target="_blank" rel="noreferrer" className="flex min-h-10 items-center justify-between text-cream/58 transition hover:text-wine">
+                      Fonte originale <ArrowUpRight size={15} aria-hidden="true" />
+                    </a>
+                  )}
                 </div>
               </div>
             </article>

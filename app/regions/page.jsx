@@ -1,6 +1,9 @@
 import AnimatedPageWrapper from "@/components/AnimatedPageWrapper";
 import RegionCard from "@/components/RegionCard";
-import { articles, regions } from "@/lib/data";
+import { getArticles } from "@/lib/article-store";
+import { regions } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Territori",
@@ -8,7 +11,9 @@ export const metadata = {
   alternates: { canonical: "/regions" }
 };
 
-export default function RegionsPage() {
+export default async function RegionsPage() {
+  const articles = await getArticles();
+
   return (
     <AnimatedPageWrapper className="technical-grid min-h-screen px-4 pb-24 pt-36">
       <section className="editorial-shell">

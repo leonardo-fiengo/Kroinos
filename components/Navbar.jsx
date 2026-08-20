@@ -57,6 +57,8 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, []);
 
+  if (pathname === "/article") return null;
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-charcoal/92 backdrop-blur-xl">
       <nav className="editorial-shell grid h-20 grid-cols-[1fr_auto_1fr] items-center" aria-label="Navigazione principale">

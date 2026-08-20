@@ -1,5 +1,7 @@
-import { articles } from "@/lib/data";
+import { getArticles } from "@/lib/article-store";
 import { absoluteUrl, siteConfig } from "@/lib/site";
+
+export const dynamic = "force-dynamic";
 
 function escapeXml(value) {
   return String(value)
@@ -10,10 +12,11 @@ function escapeXml(value) {
     .replaceAll("'", "&apos;");
 }
 
-export function GET() {
+export async function GET() {
+  const articles = await getArticles();
   const items = articles
     .map((article) => {
-      const url = absoluteUrl(`/articles/${article.slug}`);
+      const url = absoluteUrl(`/article/${article.slug}`);
       return `
         <item>
           <title>${escapeXml(article.title)}</title>
